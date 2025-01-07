@@ -3,7 +3,7 @@ const pool = require("../db");
 // Get all developers
 exports.getDevelopers = async () => {
   try {
-    const developers = pool.query("SELECT name, country FROM developers");
+    const developers = await pool.query("SELECT * FROM developers");
     return developers.rows;
   } catch (error) {
     console.error(error.message);
@@ -13,7 +13,7 @@ exports.getDevelopers = async () => {
 // Get a developer by id
 exports.getDeveloperById = async (id) => {
   try {
-    const developer = pool.query(
+    const developer = await pool.query(
       "SELECT name, country FROM developers WHERE id = $1",
       [id]
     );

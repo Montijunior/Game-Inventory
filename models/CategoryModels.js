@@ -3,7 +3,7 @@ const pool = require("../db");
 // Get all categories
 exports.getCategories = async () => {
   try {
-    const categories = await pool.query("SELECT name FROM categories");
+    const categories = await pool.query("SELECT id, name FROM categories");
     return categories.rows;
   } catch (error) {
     console.error(error.message);
@@ -29,7 +29,10 @@ exports.getCategoryById = async (id) => {
       "SELECT * FROM categories WHERE id = $1",
       [id]
     );
-  } catch (error) {}
+    return category.rows[0];
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 // Create a new category
 exports.createCategory = async (name) => {

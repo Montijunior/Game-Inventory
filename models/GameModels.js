@@ -24,6 +24,22 @@ exports.Game = async (id) => {
   }
 };
 
+// Get all games by developer with id
+exports.GamesByDeveloperId = async (developer_id) => {
+  try {
+    const query =
+      "SELECT games.id AS id, games.name AS name, games.description AS description, categories.name AS category_name, developers.name AS developer_name FROM games JOIN categories ON games.category_id = categories.id JOIN developers ON games.developer_id = developers.id WHERE developer_id = $1";
+    const games = await pool.query(query, [developer_id]);
+    return games.rows;
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+// Get all games by platform with id
+// Come back here
+exports.GamesByPlatformId = async (platform_id) => {};
+
 // Create a game
 exports.CreateGame = async (name, description, category_id, developer_id) => {
   try {
