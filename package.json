@@ -1,0 +1,19 @@
+{
+  "name": "game-inventory",
+  "version": "1.0.0",
+  "description": "A web application for managing game inventories using Express.jsfor the backend, PostgreSQL for the database(Railway), and EJS for the views. Features include creating, reading, updating, and deleting game records.",
+  "private": "true",
+  "scripts": {
+    "start": "node --watch server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "pg": "^8.13.1",
+    "pg-pool": "^3.7.0"
+  }
+}
