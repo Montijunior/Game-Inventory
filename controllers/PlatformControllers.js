@@ -1,64 +1,60 @@
 const PlatformModels = require("../models/PlatformModels");
-const GameModel = require("../models/GameModels");
+const GameModels = require("../models/GameModels");
 
 // Get all platforms
-exports.Platforms = async (req, res) => {
+exports.platforms = async (req, res) => {
   try {
-    const platforms = await PlatformModels.getPlatforms();
-    res.status(200).json(platforms);
+    const platforms = await PlatformModels.platforms();
+    res.status(200).json({ status: "success", platforms: platforms });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "error", error: error });
   }
 };
 
-// Get a platform by id and all games by platform with id
-exports.getPlatformById = async (req, res) => {
+// Get platform by id and related games
+exports.platformById = async (req, res) => {
   const { id } = req.params;
   try {
-    const platforms = await PlatformModels.getPlatformById(id);
-    const games = await GameModel.GamesByPlatformId(id);
-    res.status(200).json({ platforms, games });
+    const platform = await PlatformModels.platformById(id);
+    const games = await GameModels.GamesByPlatformId(id);
+    res
+      .status(200)
+      .json({ status: "success", platform: platform, games: games });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "error", error: error?.message });
   }
 };
 
 // Create a platform
-exports.CreatePlatform = async (req, res) => {
+exports.createPlatform = async (req, res) => {
   const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ message: "Name is required" });
-  }
   try {
-    const platform = await PlatformModels.createPlatform(name);
-    res.status(201).json(platform);
+    await PlatformModels.createPlatform(name);
+    res.status(201).json({ status: "success", message: "Platform created" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "error", error: error });
   }
 };
 
 // Update a platform
-exports.UpdatePlatformById = async (req, res) => {
+exports.updatePlatform = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
-  if (!name) {
-    return res.status(400).json({ message: "Name is required" });
-  }
   try {
-    const platform = await PlatformModels.updatePlatformById(id, name);
-    res.status(200).json(platform);
+    await PlatformModels.updatePlatform(id, name);
+    res.status(200).json({ status: "success", message: "Platform updated" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "error", error: error });
   }
 };
 
 // Delete a platform
-exports.DeletePlatformById = async (req, res) => {
+exports.deletePlatform = async (req, res) => {
   const { id } = req.params;
   try {
-    await PlatformModels.deletePlatformById(id);
-    res.status(204).json({ message: "Platform deleted" });
+    await PlatformModels.deletePlatform(id);
+    res.status(200).json({ status: "success", message: "Platform deleted" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ status: "error", error: error });
   }
 };
