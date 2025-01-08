@@ -27,8 +27,7 @@ exports.Game = async (id) => {
 // Get all games by developer with id
 exports.GamesByDeveloperId = async (developer_id) => {
   try {
-    const query =
-      "SELECT games.id AS id, games.name AS name, games.description AS description, categories.name AS category_name, developers.name AS developer_name FROM games JOIN categories ON games.category_id = categories.id JOIN developers ON games.developer_id = developers.id WHERE developer_id = $1";
+    const query = "SELECT * FROM games WHERE developer_id = $1";
     const games = await pool.query(query, [developer_id]);
     return games.rows;
   } catch (error) {
@@ -38,13 +37,23 @@ exports.GamesByDeveloperId = async (developer_id) => {
 
 // Get all games by platform with id
 // Come back here
-exports.GamesByPlatformId = async (platform_id) => {};
+exports.GamesByPlatformId = async (platform_id) => {
+  try {
+    const query = "SELECT * FROM games WHERE platform_id = $1";
+    const games = await pool.query(query, [platform_id]);
+    return games.rows;
+  } catch (error) {
+    console.error(error.message);
+    throw error;
+  }
+};
 
 // Create a game
 exports.CreateGame = async (name, description, category_id, developer_id) => {
   try {
     const query =
       "INSERT INTO games (name, description, category_id, developer_id) VALUES ($1, $2, $3, $4)";
+    await pool.query(query, [name, description, category_id, developer_id]);
   } catch (error) {
     console.error(error.message);
   }
